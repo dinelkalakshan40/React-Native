@@ -5,7 +5,7 @@ import {Link} from "expo-router";
 export default function Index() {
   return (
     <View style={styles.container}>
-      <Text>Welcome</Text><br/>
+      <Text>Welcome</Text>
       <StatusBar style="auto" />
       <Link href="/dashboard">Go to DashBoard</Link>
     </View>
