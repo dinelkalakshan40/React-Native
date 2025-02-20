@@ -1,49 +1,27 @@
 import {View, Image, Text, TouchableOpacity, StyleSheet, FlatList, TextInput} from "react-native";
 import {useState} from "react";
 import {Ionicons} from "@expo/vector-icons";
+import {FoodMenuHeader} from "./FoodMenu-Header";
 
-const foodItems = [
+export const foodItems = [
     { id: '1', name: 'Burger', price: '$5.99', qty: 1, image: require('../assets/freepik__upload__74787.png') },
     { id: '2', name: 'Pizza', price: '$8.99', qty: 1, image: require('../assets/freepik__upload__74787.png') },
     { id: '3', name: 'Pasta', price: '$7.49', qty: 1, image: require('../assets/freepik__upload__74787.png') },
-    { id: '4', name: 'Nooldes', price: '$12.49', qty: 1, image: require('../assets/freepik__upload__74787.png') },
+    { id: '4', name: 'Noolldes', price: '$12.49', qty: 1, image: require('../assets/freepik__upload__74787.png') },
 ];
+interface DashboardProps {
+    filteredItems: { id: string; name: string; price: string; qty: number; image: any }[];
+}
 
 
-export default function Dashboard() {
-    const [searchText, setSearchText] = useState('');
-
-    const [filteredItems, setFilteredItems] = useState(foodItems);
+export default function Dashboard({ filteredItems }: DashboardProps) {
 
 
-    const handleSearch = (text: string) => {
-        setSearchText(text);
-        if (text === '') {
-            setFilteredItems(foodItems); // Show all items when input is cleared
-        } else {
-            const filtered = foodItems.filter(item =>
-                item.name.toLowerCase().includes(text.toLowerCase())
-            );
-            setFilteredItems(filtered);
-        }
-    };
     return (
         <View style={styles.container}>
-            {/* Food Menu Title with Search Input */}
-            <View style={styles.header}>
-                <Text style={styles.title}>Food Menu</Text>
-                <View style={styles.searchContainer}>
-                    <TextInput
-                        style={styles.searchInput}
-                        placeholder="Search food..."
-                        value={searchText}
-                        onChangeText={handleSearch}
-                    />
-                    <TouchableOpacity style={styles.searchButton}>
-                        <Ionicons name="search" size={20} color="white" />
-                    </TouchableOpacity>
-                </View>
-            </View>
+
+            {/*<FoodMenuHeader title="Food Menu" searchText={searchText} onSearch={handleSearch} />*/}
+
 
             {/* Food Items List */}
             <FlatList

@@ -11,13 +11,30 @@ import Cart from "./cart";
 import Account from "./account";
 import {createStackNavigator} from "@react-navigation/stack";
 import Login from "./index";
-
+import { FoodMenuHeader } from "./FoodMenu-Header";
+import {useState} from "react";
+import {foodItems} from "./dashboard";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 //Tabs Layout
 function TabLayout() {
+
+    const [searchText, setSearchText] = useState('');
+    const [filteredItems, setFilteredItems] = useState(foodItems);
+
+    const handleSearch = (text: string) => {
+        setSearchText(text);
+        if (text === '') {
+            setFilteredItems(foodItems);
+        } else {
+            const filtered = foodItems.filter(item =>
+                item.name.toLowerCase().includes(text.toLowerCase())
+            );
+            setFilteredItems(filtered);
+        }
+    };
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -45,7 +62,15 @@ function TabLayout() {
                 }
             })}
         >
-            <Tab.Screen name="Dashboard" component={Dashboard} options={{ title: 'Home' }} />
+            <Tab.Screen
+                name="Dashboard"
+                options={{
+                    headerTitle: () => <FoodMenuHeader title="Food Menu" searchText={searchText} onSearch={handleSearch} />,
+                    headerStyle: { backgroundColor: '#ff5733' },
+                }}
+            >
+                {() => <Dashboard filteredItems={filteredItems} />}
+            </Tab.Screen>
             <Tab.Screen name="Orders" component={Orders} options={{ title: 'Orders' }} />
             <Tab.Screen name="Cart" component={Cart} options={{ title: 'Cart' }} />
             <Tab.Screen name="Account" component={Account} options={{ title: 'Account' }} />
