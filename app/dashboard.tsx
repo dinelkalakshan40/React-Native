@@ -16,6 +16,24 @@ interface DashboardProps {
 
 export default function Dashboard({ filteredItems }: DashboardProps) {
 
+    const [quantities, setQuantities] = useState<{ [key: string]: number }>(
+        Object.fromEntries(filteredItems.map(item => [item.id, item.qty]))
+    );
+
+    const increaseQty = (id: string) => {
+        setQuantities(prevQty => ({
+            ...prevQty,
+            [id]: Math.min(prevQty[id] + 1, 20), // Max 20
+        }));
+    };
+
+    const decreaseQty = (id: string) => {
+        setQuantities(prevQty => ({
+            ...prevQty,
+            [id]: Math.max(prevQty[id] - 1, 1), // Min 1
+        }));
+    };
+
 
     return (
         <View style={styles.container}>
@@ -33,7 +51,23 @@ export default function Dashboard({ filteredItems }: DashboardProps) {
                         <Image source={item.image} style={styles.image} />
                         <Text style={styles.name}>{item.name}</Text>
                         <Text style={styles.price}>{item.price}</Text>
-                        <Text style={styles.qty}>Qty: {item.qty}</Text>
+                        <View style={styles.qtyContainer}>
+                            <TouchableOpacity
+                                style={styles.qtyButton}
+                                onPress={() => decreaseQty(item.id)}
+                            >
+                                <Text style={styles.qtyButtonText}>-</Text>
+                            </TouchableOpacity>
+
+                            <Text style={styles.qty}>{quantities[item.id]}</Text>
+
+                            <TouchableOpacity
+                                style={styles.qtyButton}
+                                onPress={() => increaseQty(item.id)}
+                            >
+                                <Text style={styles.qtyButtonText}>+</Text>
+                            </TouchableOpacity>
+                        </View>
                         <TouchableOpacity style={styles.button}>
                             <Text style={styles.buttonText}>Add to Cart</Text>
                         </TouchableOpacity>
@@ -110,10 +144,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#ff5733',
     },
-    qty: {
-        fontSize: 14,
-        color: '#555',
-    },
     button: {
         backgroundColor: '#ff5733',
         paddingVertical: 8,
@@ -126,4 +156,8 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: 'bold',
     },
+    qty: { fontSize: 16, marginHorizontal: 10 },
+    qtyContainer: { flexDirection: 'row', alignItems: 'center', marginTop: 5 },
+    qtyButton: { backgroundColor: '#cdc3c3', padding: 5,paddingVertical: 1,paddingHorizontal: 4,   borderRadius: 5 },
+    qtyButtonText: { color: 'white', fontWeight: 'bold', fontSize: 14 },
 });
