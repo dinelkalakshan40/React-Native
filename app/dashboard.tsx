@@ -2,6 +2,8 @@ import {View, Image, Text, TouchableOpacity, StyleSheet, FlatList, TextInput} fr
 import {useState} from "react";
 import {Ionicons} from "@expo/vector-icons";
 import {FoodMenuHeader} from "./FoodMenu-Header";
+import { useCart } from './cart';
+import {addToOrder} from "./orderStore";
 
 export const foodItems = [
     { id: '1', name: 'Burger', price: '$5.99', qty: 1, image: require('../assets/freepik__upload__74787.png') },
@@ -12,13 +14,22 @@ export const foodItems = [
 interface DashboardProps {
     filteredItems: { id: string; name: string; price: string; qty: number; image: any }[];
 }
+interface Item {
+    id: string;
+    name: string;
+    price: number;
+    image: any;
+    qty: number;
+}
 
 
 export default function Dashboard({ filteredItems }: DashboardProps) {
 
+
     const [quantities, setQuantities] = useState<{ [key: string]: number }>(
         Object.fromEntries(filteredItems.map(item => [item.id, item.qty]))
     );
+   // const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
 
     const increaseQty = (id: string) => {
         setQuantities(prevQty => ({
@@ -32,6 +43,34 @@ export default function Dashboard({ filteredItems }: DashboardProps) {
             ...prevQty,
             [id]: Math.max(prevQty[id] - 1, 1), // Min 1
         }));
+    };
+    // const handleAddToCart = (item: Item) => {
+    //     addOrder({ ...item, qty: quantities[item.id] });
+    // };
+    const updateQty = (id: string, newQty: number) => {
+        setQuantities(prevQty => ({ ...prevQty, [id]: newQty }));
+    };
+
+    // const handleAddToCart = (item: Item) => {
+    //     const qty = quantities[item.id] || 1; // Default qty = 1
+    //     addToOrder({ ...item, qty }); // Add to orderStore
+    //     alert(`${item.name} (${qty}) added to cart!`);
+    // };
+    const handleAddToCart = (item) => {
+        // Parse price to a valid number by removing '$' and converting it to float
+        const price = parseFloat(item.price.replace('$', '').trim()); // Remove '$' and parse as float
+
+        // Validate price
+        if (isNaN(price) || price <= 0) {
+            console.error('Invalid price', item);
+            return;
+        }
+
+        const qty = quantities[item.id] || 1; // Default to 1 if qty is undefined
+        const orderItem = { ...item, price, qty }; // Ensure qty is added
+
+        // Add to order
+        addToOrder(orderItem);
     };
 
 
@@ -51,24 +90,17 @@ export default function Dashboard({ filteredItems }: DashboardProps) {
                         <Image source={item.image} style={styles.image} />
                         <Text style={styles.name}>{item.name}</Text>
                         <Text style={styles.price}>{item.price}</Text>
+
                         <View style={styles.qtyContainer}>
-                            <TouchableOpacity
-                                style={styles.qtyButton}
-                                onPress={() => decreaseQty(item.id)}
-                            >
+                            <TouchableOpacity style={styles.qtyButton} onPress={() => updateQty(item.id, Math.max((quantities[item.id] || 1) - 1, 1))}>
                                 <Text style={styles.qtyButtonText}>-</Text>
                             </TouchableOpacity>
-
-                            <Text style={styles.qty}>{quantities[item.id]}</Text>
-
-                            <TouchableOpacity
-                                style={styles.qtyButton}
-                                onPress={() => increaseQty(item.id)}
-                            >
+                            <Text style={styles.qty}>{quantities[item.id] || 1}</Text>
+                            <TouchableOpacity style={styles.qtyButton} onPress={() => updateQty(item.id, Math.min((quantities[item.id] || 1) + 1, 20))}>
                                 <Text style={styles.qtyButtonText}>+</Text>
                             </TouchableOpacity>
                         </View>
-                        <TouchableOpacity style={styles.button}>
+                        <TouchableOpacity style={styles.button} onPress={() => handleAddToCart(item)}>
                             <Text style={styles.buttonText}>Add to Cart</Text>
                         </TouchableOpacity>
                     </View>

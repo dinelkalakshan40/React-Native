@@ -7,8 +7,8 @@ import { View,StyleSheet } from 'react-native';
 
 import Dashboard from "./dashboard";
 import Orders from "./orders";
-import Cart from "./cart";
-import Account from "./account";
+import {Cart} from "./cart";
+import PlaceOrder from "./PlaceOrder";
 import {createStackNavigator} from "@react-navigation/stack";
 import Login from "./index";
 import { FoodMenuHeader } from "./FoodMenu-Header";
@@ -44,7 +44,7 @@ function TabLayout() {
                         Dashboard: 'home',
                         Orders: 'receipt',
                         Cart: 'cart',
-                        Account: 'person',
+                        PlaceOrder: 'checkmark-circle-outline',
                     };
 
                     return <Ionicons name={iconNames[route.name]} size={size} color={color} />;
@@ -73,7 +73,7 @@ function TabLayout() {
             </Tab.Screen>
             <Tab.Screen name="Orders" component={Orders} options={{ title: 'Orders' }} />
             <Tab.Screen name="Cart" component={Cart} options={{ title: 'Cart' }} />
-            <Tab.Screen name="Account" component={Account} options={{ title: 'Account' }} />
+            <Tab.Screen name="PlaceOrder" component={PlaceOrder} options={{ title: 'Place order' }} />
         </Tab.Navigator>
     );
 }

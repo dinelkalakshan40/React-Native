@@ -2,46 +2,47 @@ import {StatusBar} from 'expo-status-bar';
 import {Alert, Button, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {Link, useRouter} from "expo-router";
 import {useState} from "react";
+import {CartProvider} from "./CartContext";
 
 export default function Index() {
     const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
-    const router=useRouter();
+    const router = useRouter();
 
-    const handleLogin=()=>{
-        if (username==='user' && password==='1234'){
+    const handleLogin = () => {
+        if (username === 'user' && password === '1234') {
             router.push('/dashboard');
-        }else {
+        } else {
             Alert.alert('Invalid credentials', 'Please check your username and password');
         }
     };
     return (
-        <View style={styles.container}>
-            <Text style={styles.heading}>Welcome Back!</Text>
+            <View style={styles.container}>
+                <Text style={styles.heading}>Welcome Back!</Text>
 
-            <TextInput
-                style={styles.input}
-                placeholder="Username"
-                placeholderTextColor="#888"
-                value={username}
-                onChangeText={setUserName}
-            />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Username"
+                    placeholderTextColor="#888"
+                    value={username}
+                    onChangeText={setUserName}
+                />
 
-            <TextInput
-                style={styles.input}
-                placeholder="Password"
-                secureTextEntry
-                placeholderTextColor="#888"
-                value={password}
-                onChangeText={setPassword}
-            />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Password"
+                    secureTextEntry
+                    placeholderTextColor="#888"
+                    value={password}
+                    onChangeText={setPassword}
+                />
 
-            <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={handleLogin}>
+                    <Text style={styles.buttonText}>Login</Text>
+                </TouchableOpacity>
 
-            <StatusBar style="auto" />
-        </View>
+                <StatusBar style="auto"/>
+            </View>
     );
 }
 
