@@ -7,13 +7,16 @@ import { View,StyleSheet } from 'react-native';
 
 import Dashboard from "./dashboard";
 import Orders from "./orders";
-import {Cart} from "./cart";
-import PlaceOrder from "./PlaceOrder";
+import Cart from "./cart";
+import PlaceOrder from "./Account";
 import {createStackNavigator} from "@react-navigation/stack";
 import Login from "./index";
 import { FoodMenuHeader } from "./FoodMenu-Header";
 import {useState} from "react";
 import {foodItems} from "./dashboard";
+import CartPage from "./cart";
+import OrderPage from "./orders";
+import Account from "./Account";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -44,7 +47,7 @@ function TabLayout() {
                         Dashboard: 'home',
                         Orders: 'receipt',
                         Cart: 'cart',
-                        PlaceOrder: 'checkmark-circle-outline',
+                        Account: 'person',
                     };
 
                     return <Ionicons name={iconNames[route.name]} size={size} color={color} />;
@@ -73,7 +76,7 @@ function TabLayout() {
             </Tab.Screen>
             <Tab.Screen name="Orders" component={Orders} options={{ title: 'Orders' }} />
             <Tab.Screen name="Cart" component={Cart} options={{ title: 'Cart' }} />
-            <Tab.Screen name="PlaceOrder" component={PlaceOrder} options={{ title: 'Place order' }} />
+            <Tab.Screen name="Account" component={Account} options={{ title: 'Account' }} />
         </Tab.Navigator>
     );
 }
@@ -85,6 +88,8 @@ export default function RootLayout() {
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="dashboard" component={TabLayout} />
+                <Stack.Screen name="OrderPage" component={OrderPage} />
+                <Stack.Screen name="CartPage" component={CartPage} />
             </Stack.Navigator>
         </View>
 

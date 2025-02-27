@@ -2,7 +2,6 @@ import {StatusBar} from 'expo-status-bar';
 import {Alert, Button, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import {Link, useRouter} from "expo-router";
 import {useState} from "react";
-import {CartProvider} from "./CartContext";
 
 export default function Index() {
     const [username, setUserName] = useState('');

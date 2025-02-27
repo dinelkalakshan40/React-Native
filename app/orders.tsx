@@ -1,9 +1,11 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { getOrders } from "./orderStore";
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 export default function OrderPage() {
     const orders = getOrders();
+    const navigation = useNavigation();
 
     return (
         <View style={styles.container}>
@@ -28,6 +30,12 @@ export default function OrderPage() {
                     );
                 }}
             />
+            <TouchableOpacity
+                style={styles.checkoutButton}
+                onPress={() => navigation.navigate('CartPage', { orders })}
+            >
+                <Text style={styles.checkoutButtonText}>Proceed to Checkout</Text>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -64,7 +72,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         alignItems: 'center',
     },
-    checkoutText: {
+    checkoutButtonText: {
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',

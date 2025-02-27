@@ -2,7 +2,6 @@ import {View, Image, Text, TouchableOpacity, StyleSheet, FlatList, TextInput} fr
 import {useState} from "react";
 import {Ionicons} from "@expo/vector-icons";
 import {FoodMenuHeader} from "./FoodMenu-Header";
-import { useCart } from './cart';
 import {addToOrder} from "./orderStore";
 
 export const foodItems = [

@@ -1,5 +1,4 @@
 import { registerRootComponent } from 'expo';
-import {CartProvider} from './app/CartContext';
 import Dashboard from "./app/dashboard";
 
 import Index from './app/index';
